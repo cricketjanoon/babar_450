@@ -1,6 +1,11 @@
 #include <iostream>
 using namespace std;
 
+struct Pair {
+    int min;
+    int max;
+};
+
 void swap(int& a, int &b);
 void print_array(int *array, int size);
 
