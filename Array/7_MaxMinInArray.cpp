@@ -3,7 +3,7 @@
 
 using namespace std;
 
-// iterative max and min
+// METHOD 1 (Simple Linear Search) 
 void find_max_min(int arr[], int size, int &max, int &min){
 
     max = arr[0];
@@ -19,29 +19,26 @@ void find_max_min(int arr[], int size, int &max, int &min){
     }
 }
 
-// recusive way to find max and min of array
+// METHOD 2 (Tournament Method) 
 Pair find_max_min(int arr[], int low, int high){
 
     Pair global_pair;
 
-    if (low==high)
-    {
+    if (low==high) {
         global_pair.min = arr[low];
         global_pair.max = arr[low];
     }
-    else if (high-low==1)
-    {
-        if(arr[low] > arr[high]){
+    else if (high-low==1) {
+        if(arr[low] > arr[high]) {
             global_pair.max = arr[low];
             global_pair.min = arr[high];
         }
-        else{
+        else {
             global_pair.min = arr[low];
             global_pair.max = arr[high];
         }
     }
-    else
-    {   
+    else {   
         int mid = (low + high) / 2;
         Pair p1 = find_max_min(arr, low, mid);
         Pair p2 = find_max_min(arr, mid+1, high);
@@ -56,9 +53,61 @@ Pair find_max_min(int arr[], int low, int high){
     return global_pair;
 }
 
+Pair find_max_min(int arr[], int size){
+
+    Pair p;
+    int max, min;
+
+    if (size == 1){
+        p.max = arr[0];
+        p.min = arr[0];
+        return p;
+    }
+
+    if (size%2 == 0) { // even size
+        if (arr[0] > arr[1]) {
+            max = arr[0];
+            min = arr[1];
+        }
+        else {
+            max = arr[1];
+            min = arr[0];
+        }
+    }
+    else { // odd size
+        max = arr[0];
+        min = arr[0];
+    }
+
+    for(int i=1; i<size-1; i+=2){
+        if(arr[i] > arr[i+1]){
+            if (arr[i] > max){
+                max = arr[i];
+            }
+            if(arr[i+1] < min){
+                min = arr[i+1];
+            }
+        }
+        else {
+            if (arr[i+1] > max){
+                max = arr[i+1];
+            }
+            if (arr[i] < min){
+                min = arr[i];
+            }
+        }
+    }
+
+    p.max = max;
+    p.min = min;
+
+    return p;
+}
+
+
 int main(){
 
-    int arr[] = {1, 101, 2, 5, 3, 9, 100, 11};
+    int arr[] = {1, 4, 3, 9, 101, 20, 23, 11};
     int size = sizeof(arr)/sizeof(arr[0]);
     int max, min;
 
@@ -75,5 +124,9 @@ int main(){
     cout << "Min: " << p.min << endl;
 
 
+    p = find_max_min(arr, size);
+    cout << endl << "Comparison in Pairs: " << endl;
+    cout << "Max: " << p.max << endl;
+    cout << "Min: " << p.min << endl;
 
 }
